@@ -60,7 +60,6 @@
 		void main() {
 			vec4 texture_color = texture2D(u_image, v_texCoord);
 			gl_FragColor = vec4(texture_color.rgb, texture_color.a * u_alpha); 
-			//texture2D(u_image, v_texCoord);
 		}
 	</script>
 </head>

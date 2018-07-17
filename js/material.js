@@ -174,7 +174,7 @@ class Sprite {
         this.isLoaded = true;
     }
 
-    render(position, frames, alpha) {
+    render(position, frames, alpha = 1) {
         if(this.isLoaded) {
             let gl = this.gl;
 
@@ -225,21 +225,30 @@ class Character extends Sprite {
         currentPosition.add(velocity);
     }
 
-    render(props) {
-        const date = new Date();
-        const vel = new Point(1, 0);
-        this.move(this.position, vel);
-        this.frame.x = (date * 0.005 ) % 6;
-        this.frame.y = 1;
-        let alpha = 1.0;
-        if ("alpha" in props) {
-            alpha = props.alpha;
-        }
+    render(props={}) {
+        // const date = new Date();
+        // const vel = new Point(1, 0);
+        // this.move(this.position, vel);
+        // this.frame.x = (date * 0.005 ) % 6;
+        // this.frame.y = 1;
+        // let alpha = 1.0;
+        // if ("alpha" in props) {
+        //     alpha = props.alpha;
+        // }
+
+
         super.render(this.position, this.frame, 1);
     } 
     
 }
 
 class Background extends Sprite {
+    constructor(gl, img_url, vs, fs, opts={}) {
+        super(gl, img_url, vs, fs, opts);
+    }
+
+    render( ){
+
+    }
 
 }

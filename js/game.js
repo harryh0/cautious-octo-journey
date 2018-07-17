@@ -19,22 +19,14 @@ class Game {
 		let vs = document.getElementById("vert_01").innerHTML;
 		let fs = document.getElementById("frag_01").innerHTML;
 
-		//this.spriteList = []
+		// TODO : INITIALIZE ARRAY OR DICTIONARY OF SPRITES 
+		this.rogue = new Character(this.gl, "assets/img/v2.1/adventurer-1.3-Sheet.png", vs, fs, {width : 50, height : 37}, new Point(), new Point(0, 1));
+		this.slime = new Character(this.gl, "assets/img/Slime/slime-Sheet.png", vs, fs, {width : 32, height : 25}, new Point(1, 1), new Point());
 		
-	    //this.sprite = new Sprite(this.gl, "img/v2.1/adventurer-1.3-Sheet.png", vs, fs, {width : 50, height: 37});
-		//this.sprite = new Sprite(this.gl, "img/v2.1/ind_sprites/adventurer-attack1-00-1.3.png" , vs, fs, {width: 50, height: 37});
-
-		this.rogue = new Character(this.gl, "img/v2.1/adventurer-1.3-Sheet.png", vs, fs, {width : 50, height : 37}, new Point(), new Point(0, 1));
 		this.spritePos = new Point();
 
 		this.spriteFrame = new Point();
 
-		// var m = new Matrix3x3();
-		// m.matrix[Matrix3x3.M00] = 3;
-		// var n = new Matrix3x3();
-
-		// var o = m.multiply(n);
-		// console.log(o);
 	}
 	resize(x, y) {
 		this.canvasElm.width = x;
@@ -52,17 +44,15 @@ class Game {
 		this.gl.enable(this.gl.BLEND);
 		this.gl.blendFunc( this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 		
-		// this.spriteFrame.y = 1;
-		// const date = new Date();
-		// this.spriteFrame.x = (date * 0.005) % 6;
-		//const some_alpha = (Math.sin(date * 0.005) / 2.0) + 0.5;
-
-		
-		// this.spritePos.x = (this.spritePos.x + 1) % 256
-		
+		// TODO : ITERATE THROUGH SPRITE REPRESENTATION AND RENDER EACH VALUE
 		this.rogue.render({alpha : 1});
-		//this.sprite.render(this.spritePos, this.spriteFrame, some_alpha);
-
+		this.slime.render();
+		
 		this.gl.flush();
 	}
+
+	addSprites(sprite) {
+		// parse json body to 
+	}
+
 }

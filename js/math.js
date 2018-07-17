@@ -1,7 +1,12 @@
 class Point {
-    constructor(x=0.0, y=0.0) {
-        this.x = x;
-        this.y = y;
+    constructor(x=0.0, y=0.0, points={}) {
+        if (!points) {
+            this.x = points.x;
+            this.y = points.y;
+        } else {
+            this.x = x;
+            this.y = y;
+        }
     }
 
     add(point) {
@@ -10,7 +15,6 @@ class Point {
     }
 }
 
-// default 3x3 matrix class
 class Matrix3x3 {
     
     constructor() {
@@ -18,7 +22,7 @@ class Matrix3x3 {
             1, 0, 0,
             0, 1, 0,
             0, 0, 1
-        ] // represent the columns by arrays
+        ] 
     }
 
     // multiplies this.matrix x m.matrix
@@ -78,6 +82,13 @@ class Matrix3x3 {
 
     getFloatArray() {
         return new Float32Array(this.matrix);
+    }
+
+    rotate(theta) {
+        var output = new Matrix3x3();
+        output.matrix = [
+            this.matrix[Matrix3x3.M00]
+        ]
     }
 }
 
