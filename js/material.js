@@ -61,7 +61,7 @@ class Material {
                     
                     details = gl.getActiveUniform(this.program, i);
                     location = gl.getUniformLocation(this.program, details.name);
-                    console.log(details);
+                    //console.log(details);
                 } else {
                     details = gl.getActiveAttrib(this.program, i);
                     location = gl.getAttribLocation(this.program, details.name);
@@ -215,10 +215,15 @@ class Sprite {
 
 
 class Character extends Sprite {
-    constructor(gl, img_url, vs, fs, opts={}, position, frame) {
+    constructor(gl, img_url, vs, fs, opts={}, position=null, frame=null) {
         super(gl, img_url, vs, fs, opts);
-        this.position = position;
-        this.frame = frame;
+        this.position = new Point();
+        this.frame = new Point();
+        if (position != null | frame != null) {
+            this.position = position;
+            this.frame = frame;
+        }
+        
     }
     
     move(currentPosition, velocity) {
@@ -235,10 +240,13 @@ class Character extends Sprite {
         // if ("alpha" in props) {
         //     alpha = props.alpha;
         // }
-
-
-        super.render(this.position, this.frame, 1);
+        
+        super.render(this.position, this.frame);
     } 
+
+    animate(action) {
+
+    }
     
 }
 
