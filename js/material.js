@@ -255,7 +255,9 @@ class Character {
         }
         if ("actions" in opts) {
             this.actions = opts["actions"];
-
+            this.currentAction = "move";
+            this.actionIndex = 0
+            this.frames = new Point(this.actions[this.currentAction][this.actionIndex]["x"], this.actions[this.currentAction][this.actionIndex]["y"]);
         }
 
         this.image = new Image();
@@ -309,8 +311,11 @@ class Character {
     }
 
 
-    move(currentPosition, velocity) {
-        currentPosition.add(velocity);
+    move(speed) {
+        this.actionIndex += speed;
+        this.actionIndex %= this.actions[this.currentAction].length;
+        this.frames.x = this.actions[this.currentAction][Math.floor(this.actionIndex)]["x"];
+        this.frames.y = this.actions[this.currentAction][Math.floor(this.actionIndex)]["y"];
     }
 
     render(alpha= 1) {
@@ -325,8 +330,6 @@ class Character {
         // }
         if (this.isLoaded) {
             let gl = this.gl;
-
-            
 
             let frame_x = Math.floor(this.frames.x) * this.uv_x;
             let frame_y = Math.floor(this.frames.y) * this.uv_y;

@@ -28,11 +28,6 @@ class Game {
 		// TODO : INITIALIZE ARRAY OR DICTIONARY OF SPRITES 
 		//this.rogue = new Character(this.gl, "assets/img/v2.1/adventurer-1.3-Sheet.png", vs, fs, {width : 50, height : 37});
 		this.slime = new Character(this.gl, vs, fs, slimeAttributes)
-		//this.slime = this.addSprites(slimeAttributes);
-
-		this.spritePos = new Point();
-
-		this.spriteFrame = new Point();
 
 	}
 	resize(x, y) {
@@ -53,6 +48,8 @@ class Game {
 		
 		// TODO : ITERATE THROUGH SPRITE REPRESENTATION AND RENDER EACH VALUE
 		//this.rogue.render({alpha : 1});
+		const speed = 0.08;
+		this.slime.move(speed);
 		this.slime.render();
 		
 		this.gl.flush();
