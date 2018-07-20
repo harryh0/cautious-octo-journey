@@ -26,9 +26,8 @@ class Game {
 
 
 		// TODO : INITIALIZE ARRAY OR DICTIONARY OF SPRITES 
-		this.rogue = new Character(this.gl, "assets/img/v2.1/adventurer-1.3-Sheet.png", vs, fs, {width : 50, height : 37});
-		this.slime = this.addSprites(slimeAttributes, vs, fs);
-		
+		//this.rogue = new Character(this.gl, "assets/img/v2.1/adventurer-1.3-Sheet.png", vs, fs, {width : 50, height : 37});
+		this.slime = new Character(this.gl, vs, fs, slimeAttributes)
 		//this.slime = this.addSprites(slimeAttributes);
 
 		this.spritePos = new Point();
@@ -53,7 +52,7 @@ class Game {
 		this.gl.blendFunc( this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 		
 		// TODO : ITERATE THROUGH SPRITE REPRESENTATION AND RENDER EACH VALUE
-		this.rogue.render({alpha : 1});
+		//this.rogue.render({alpha : 1});
 		this.slime.render();
 		
 		this.gl.flush();
@@ -68,7 +67,7 @@ class Game {
 		let direction = spriteAttributes["direction"];
 		let actions = spriteAttributes["actions"];
 
-		return new Character(this.gl, filePath, vs, fs, dimensions)
+		return new Character(this.gl, filePath, vs, fs, spriteAttributes);
 	}
 
 }

@@ -16,7 +16,6 @@ class Point {
 }
 
 class Matrix3x3 {
-    
     constructor() {
         this.matrix = [
             1, 0, 0,
@@ -84,11 +83,8 @@ class Matrix3x3 {
         return new Float32Array(this.matrix);
     }
 
-    rotate(theta) {
-        var output = new Matrix3x3();
-        output.matrix = [
-            this.matrix[Matrix3x3.M00]
-        ]
+    flipX() {
+        
     }
 }
 

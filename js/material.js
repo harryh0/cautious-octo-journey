@@ -213,24 +213,107 @@ class Sprite {
 
 }
 
+// characters are complex sprites that contain a direction they're facing 
+// and a series of actions they can take (ie. idle, move, etc.)
+const DIRECTIONS =  {
+    LEFT : 1,
+    RIGHT : 2, 
+    UP : 3, 
+    DOWN : 4
+};
+const dir_dic = {
+    "left" : DIRECTIONS.LEFT,
+    "right" : DIRECTIONS.RIGHT,
+    "up" : DIRECTIONS.UP,
+    "DOWN" : DIRECTIONS.DOWN
+};
 
-class Character extends Sprite {
-    constructor(gl, img_url, vs, fs, opts={}, position=null, frame=null) {
-        super(gl, img_url, vs, fs, opts);
-        this.position = new Point();
-        this.frame = new Point();
-        if (position != null | frame != null) {
-            this.position = position;
-            this.frame = frame;
+class Character {
+    constructor(gl, vs, fs, opts={}) {
+        this.gl = gl;
+        this.isLoaded = false;
+        this.material = new Material(gl, vs, fs);
+        this.size = new Point(64, 64); // default sprite size
+        if ("dimensions" in opts) {
+            if ("width" in opts["dimensions"]) {
+                this.size.x = opts["dimensions"]["width"] * 1;
+            }
+            if ("height" in opts["dimensions"]) {
+                this.size.y = opts["dimensions"]["height"] * 1;
+            }
         }
-        
+        this.position = new Point();
+        this.frames = new Point();
+        this.direction = DIRECTIONS.LEFT;
+        this.actions = {};
+        if ("position" in opts) {
+            this.position = new Point(opts["position"]["x"], opts["position"]["y"]);
+        }
+
+        if ("direction" in opts) {
+            this.direction = dir_dic[opts["direction"]];
+        }
+        if ("actions" in opts) {
+            this.actions = opts["actions"];
+
+        }
+
+        this.image = new Image();
+        this.image.src = opts["filePath"];
+        this.image.sprite = this;
+        this.image.onload = function() {
+            this.sprite.setup();
+        }
     }
     
+    static createRectArray(x=0, y=0, w=1, h=1) {
+        return new Float32Array([
+            x, y,
+            x + w, y,
+            x, y + h, // first triangle
+            x, y + h,
+            x + w, y, 
+            x + w, y + h // second triangle
+        ]);
+    }
+
+    setup() {
+        let gl = this.gl;
+        
+        gl.useProgram(this.material.program);
+
+        this.gl_texture = gl.createTexture();
+
+        gl.bindTexture(gl.TEXTURE_2D, this.gl_texture)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+
+        this.uv_x = this.size.x / this.image.width;
+        this.uv_y = this.size.y / this.image.height;
+
+        this.tex_buff = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.tex_buff);
+        gl.bufferData(gl.ARRAY_BUFFER, Sprite.createRectArray(0, 0, this.uv_x, this.uv_y), gl.STATIC_DRAW);
+
+        this.geo_buff = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.geo_buff);
+        gl.bufferData(gl.ARRAY_BUFFER, Sprite.createRectArray(0, 0, this.size.x, this.size.y), gl.STATIC_DRAW);
+
+        gl.useProgram(null);
+
+        this.isLoaded = true;
+    }
+
+
     move(currentPosition, velocity) {
         currentPosition.add(velocity);
     }
 
-    render(props={}) {
+    render(alpha= 1) {
         // const date = new Date();
         // const vel = new Point(1, 0);
         // this.move(this.position, vel);
@@ -240,13 +323,42 @@ class Character extends Sprite {
         // if ("alpha" in props) {
         //     alpha = props.alpha;
         // }
-        
-        super.render(this.position, this.frame);
+        if (this.isLoaded) {
+            let gl = this.gl;
+
+            
+
+            let frame_x = Math.floor(this.frames.x) * this.uv_x;
+            let frame_y = Math.floor(this.frames.y) * this.uv_y;
+            
+            let oMat = new Matrix3x3().transition(this.position.x, this.position.y);
+            if (this.direction === DIRECTIONS.RIGHT) {
+                oMat = new Matrix3x3().transition(this.position.x + this.size.x, this.position.y).scale(-1, 1);
+            }
+            
+            gl.useProgram(this.material.program);
+            
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, this.gl_texture);
+            this.material.set("u_image", 0);
+
+            this.material.set("u_alpha", alpha);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.tex_buff);
+            this.material.set("a_texCoord");
+            
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.geo_buff);
+            this.material.set("a_position");
+
+            this.material.set("u_frame", frame_x, frame_y);
+            this.material.set("u_world", window.game.worldSpaceMatrix.getFloatArray());
+            this.material.set("u_object", oMat.getFloatArray());
+
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
+
+            gl.useProgram(null);
+        }
     } 
-
-    animate(action) {
-
-    }
     
 }
 
