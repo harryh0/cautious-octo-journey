@@ -62,6 +62,20 @@
 			gl_FragColor = vec4(texture_color.rgb, texture_color.a * u_alpha); 
 		}
 	</script>
+	<!--fragment shader for white sprite-->
+	<script type="fragment_shader" id="frag_02">
+		precision mediump float;
+		uniform sampler2D u_image;
+		varying vec2 v_texCoord;
+
+		uniform float u_time;
+
+		void main() {
+			vec4 texture_color = texture2D(u_image, v_texCoord);
+			// every interval, we want the color of the sprite to flash white
+			gl_FragColor = vec4(1.0, 1.0, 1.0, texture_color.a);
+		}
+	</script>
 </head>
 <body>
 </body>

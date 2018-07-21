@@ -18,6 +18,7 @@ class Game {
 		
 		let vs = document.getElementById("vert_01").innerHTML;
 		let fs = document.getElementById("frag_01").innerHTML;
+		let fs2 = document.getElementById("frag_02").innerHTML;
 
 		var request = new XMLHttpRequest();
 		request.open("GET", "../assets/spriteInfo/slime.json", false);
@@ -27,7 +28,8 @@ class Game {
 
 		// TODO : INITIALIZE ARRAY OR DICTIONARY OF SPRITES 
 		//this.rogue = new Character(this.gl, "assets/img/v2.1/adventurer-1.3-Sheet.png", vs, fs, {width : 50, height : 37});
-		this.slime = new Character(this.gl, vs, fs, slimeAttributes)
+
+		this.slime = new Character(this.gl, vs, fs, fs2, slimeAttributes);
 
 	}
 	resize(x, y) {
@@ -48,10 +50,10 @@ class Game {
 		
 		// TODO : ITERATE THROUGH SPRITE REPRESENTATION AND RENDER EACH VALUE
 		//this.rogue.render({alpha : 1});
-		const speed = 0.08;
-		this.slime.move(speed);
+		const speed = 0.1;
+        this.slime.move(speed);
 		this.slime.render();
-		
+
 		this.gl.flush();
 	}
 
