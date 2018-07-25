@@ -1,0 +1,28 @@
+{
+    "filepath" : "",
+    "dimensions" : {"width" : 0, "height" : 0},
+    "position" : {"x" : 0, "y" : 0},
+    "direction" : "right",
+    "actions" : {
+        "attack1" : [],
+        "attack2" : [],
+        "attack3" : [],
+        "climb-corner" : [],
+        "grab-corner" : [],
+        "jump-corner" : [],
+        "crouch" : [],
+        "die" : [],
+        "fall" : [],
+        "hurt" : [],
+        "idle" : [],
+        "jump" : [],
+        "climb-ladder" : [],
+        "run" : [],
+        "slide" : [],
+        "somersault" : [],
+        "stand-slide" : [],
+        "swim" : [],
+        "draw-sword" : [],
+        "sheath-sword" : []
+    }
+}
